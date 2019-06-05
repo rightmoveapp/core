@@ -13,7 +13,7 @@ This started as a spreadsheet to compare different factors between companies. Th
 RightMove uses a React.js SPA while both application behavior and machine learning models all live within the Django REST framework. Data is stored in Postgresql. Training data obtained from the Linkedin API via OAUTH login is also incorporated. 
 
 ## SiteMap
-![early sitemap](./readme_assets/sitemap.png)
+![early sitemap](./readme_assets/site_map.png)
 The site map will consist of a few key user stories:
 - as a user I want to be able to answer questions about me to train the model
 - as a user I want to be able to answer questions about a job to see how it fits
