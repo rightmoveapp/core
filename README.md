@@ -19,6 +19,7 @@ The site map will consist of a few key user stories:
 - as a user I want to be able to answer questions about a job to see how it fits
 - as a user I want to be able to view job results side by side and compare 
 - as a user I want to be able to pick which stat model is used for a fit
+- as a user I want to provide feedback after getting a job to help teach the model for future job seekers
 
 ## Roles 
 - the *web app team* will handle the react application, the user authentication and the OAUTH login calls. They will handle the MVC layer transactional database ORM design. 
@@ -27,3 +28,17 @@ The site map will consist of a few key user stories:
 
 - the *devops team* will containerize and deploy the application, and set up basic CI/CD.
  
+## MVP 
+- user can log in via OAUTH and answer a number of questions about themselves
+- user can create a new job and answer questions about that job
+- user is provided a resulting score for that job
+- one single static weighted model with supervision (no ML)
+- user can answer post-hire questions 
+
+## Stretch Goals (long-term)
+- user can see forest chart of their weighted values post-questions
+- user can save and edit answering job questions
+- user is emailed via MailChimp etc to request post-hire questions at intervals automatically
+- more than one model
+- ML 
+- OAUTH data incorporated in model 
