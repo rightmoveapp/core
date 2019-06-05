@@ -22,6 +22,7 @@ The site map will consist of a few key user stories:
 - as a user I want to provide feedback after getting a job to help teach the model for future job seekers
 
 ## Roles 
+- the **design UX team** will create the mockups, user journeys, and interaction designs that the web app team will build.
 - the **web app team** will handle the react application, the user authentication and the OAUTH login calls. They will handle the MVC layer transactional database ORM design. 
 
 - the **data science team** will build the model(s) as modules with a simple API for integration into the application model layer.
