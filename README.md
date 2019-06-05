@@ -22,11 +22,11 @@ The site map will consist of a few key user stories:
 - as a user I want to provide feedback after getting a job to help teach the model for future job seekers
 
 ## Roles 
-- the *web app team* will handle the react application, the user authentication and the OAUTH login calls. They will handle the MVC layer transactional database ORM design. 
+- the **web app team** will handle the react application, the user authentication and the OAUTH login calls. They will handle the MVC layer transactional database ORM design. 
 
-- the *data science team* will build the model(s) as modules with a simple API for integration into the application model layer.
+- the **data science team** will build the model(s) as modules with a simple API for integration into the application model layer.
 
-- the *devops team* will containerize and deploy the application, and set up basic CI/CD.
+- the **devops team** will containerize and deploy the application, and set up basic CI/CD.
  
 ## MVP 
 - user can log in via OAUTH and answer a number of questions about themselves
