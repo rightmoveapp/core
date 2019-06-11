@@ -1,0 +1,56 @@
+version: '3'
+## ^ dockerfiles have a bunch of different versions. this one is on 3
+
+
+## list of all the containers we want, and how they connect together
+services:
+
+  ## the postgres db, we name it django_db
+  django_db:
+
+    ## go to docker hub and use the official postgres image
+    image: postgres
+
+    ## set environment variables in the postgres container
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+
+    ## connect ports to the outside world (ie your laptop).
+    ## this says "connect port 5432 in the container to port 5432 on your laptop"
+    ports:
+      - "5432:5432"
+
+  ## the actual django container!  
+  django:
+
+    ## we did fancy shit so instead of using a django image from docker hub,
+    ## we will use the local django.dockerfile to build and image
+    build:
+      dockerfile: ./django.dockerfile
+      context: .
+
+    ## if the postgres image above crashes, don't build. we need postgres to run.
+    depends_on:
+      - django_db
+
+    ## set environment variables in the django container
+    environment:
+      - DATABASE_NAME=django
+      - DATABASE_PASSWORD=django
+      - DATABASE_USER=django
+
+    ## map port 8000 inside the container to port 8000 on your computer
+    ports:
+      - "8000:8000"
+
+    ## this says create a "shared drive" between this directory (that you are in) and the `/app` directory
+    ## inside the container. if you change anything on one it changes in the other.
+    volumes:
+      - .:/app
+    ## persist the container so we can manually restart the server.
+    ## docker kills containers when the job you give them is done - which is great for production.
+    ## but for dev we give it an endless job (read the end of an empty log file that grows forever)
+    ## so we can restart the server manually over and over without killing the container.
+    command: tail -f /dev/null

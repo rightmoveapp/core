@@ -1,0 +1,37 @@
+#!/bin/bash
+
+## ^^ this is called a "shebang" https://bash.cyberciti.biz/guide/Shebang
+## it tells the shell that when you run this file without telling what 
+## interpreter (ie language) to use, use this one (ie bash in this case). 
+
+
+## shut down all the docker containers and networks
+## that have been created by the docker-compose.yml file
+docker-compose down
+
+## $1 is the first argument of a bash script. so if you type `ls /banana`
+## into the console, $1 would be equal to `/banana`
+## so this says "if someone runs this script with `build` after, run docker-compose build"
+## https://docs.docker.com/compose/reference/build/
+if [ "$1" == "build" ]; then
+## breaking it down:
+## `docker-compose` docker has different methods of running. this one tells docker to use compose.
+## `build` assume that all the images you would build from docker compose are outdated. start from scratch and rebuild them all.
+  docker-compose build
+fi
+
+## otherwise, just run docker-compose up -d
+## https://docs.docker.com/compose/reference/up/
+## breaking it down:
+## `docker-compose` docker has different methods of running. this one tells docker to use compose.
+## `up` the compose file has a bunch of instructions for making and connecting containers. up says build them all and connect them per the file.
+## `-d` do everything "detached" or in the background. I don't want it hung to my screen all day.
+docker-compose up -d
+
+## open a shell inside the django container.
+## breaking it down:
+## `docker-compose` docker has different methods of running. this one tells docker to use compose.
+## `exec` run the commands I'm about to give you in the container I'm about to point to
+## `django` the name of the container IN THE DOCKER COMPOSE FILE. If this was normal docker run you'd have to get an ID, but because we use compose it knows to look for the container of django you created with the compose file
+## `/bin/bash` this is actually where the program that creates shells (terminals) lives for most systems. we are saying "run the shell making program" which starts up a terminal for you.
+docker-compose exec django /bin/bash
