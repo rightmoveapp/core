@@ -1,4 +1,4 @@
-"""rightMove URL Configuration
+"""right_move URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,14 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
-
-
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'^accounts/', include('allauth.urls')),
-    path(r'^api-auth/', include('rest_framework.urls')),
-    path(r'^rest-auth/', include('rest_auth.urls')),
-    path(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
