@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
-from right_move.api.serializers import UserSerializer, GroupSerializer
+from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
+from api.models import Question
 
-class userViewSet(ModelViewSet):
+
+class UserViewSet(ModelViewSet):
   # API endpoint that allows users to be views or edited
   queryset = User.objects.all().order_by('-date_joined')
   serializer_class = UserSerializer
@@ -10,3 +12,7 @@ class userViewSet(ModelViewSet):
 class GroupViewSet(ModelViewSet):
   queryset = Group.objects.all()
   serializer_class = GroupSerializer
+
+class QuestionViewSet(ModelViewSet):
+  queryset = Question.objects.all()
+  serializer_class = QuestionSerializer

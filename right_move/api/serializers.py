@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.serializers import HyperlinkedModelSerializer as HMS
+from api.models import Question
 
 
 
@@ -12,3 +13,8 @@ class GroupSerializer(HMS):
   class Meta:
     model = Group
     fields = ('url','name')
+
+class QuestionSerializer(HMS):
+  class Meta:
+    model = Question
+    fields = ('body','category','subcategory')
