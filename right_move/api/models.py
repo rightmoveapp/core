@@ -6,11 +6,17 @@ class Category(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category_name = models.CharField(max_length=100)
+  class Meta:
+        db_table = "Categories"
+        verbose_name_plural = "Categories"
 
 class Subcategory(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   subcategory_name = models.CharField(max_length=100)
+  class Meta:
+        db_table = "Subcategories"
+        verbose_name_plural = "Subcategories"
 
 class Question(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -19,32 +25,32 @@ class Question(models.Model):
   category_id = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory_id = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
 
-class Choices(models.Model):
+class Choice(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   choice = models.TextField()
   question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-class User_Attributes(models.Model):
+class User_Attribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category_id = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory_id = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
   value = models.CharField(max_length=250)
 
-class Jobs(models.Model):
+class Job(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  company_name = models.CharField(max_length=250)
-  role = models.CharField(max_length=250)
+  company_name = models.CharField(max_length=250, null=True)
+  role = models.CharField(max_length=250, null=True)
   user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class Job_Attrubutes(models.Model):
+class Job_Attribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   attribute_name = models.CharField(max_length=250)
   attribute_value = models.CharField(max_length=250)
-  job_id = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+  job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
 
 class Content(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
