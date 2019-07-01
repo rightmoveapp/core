@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.serializers import HyperlinkedModelSerializer as HMS
-from api.models import Question, Content, Category, Subcategory, Choice, User_Attribute, Job, Job_Attribute, PeristantSession
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession
 
 
 

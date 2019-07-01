@@ -31,7 +31,7 @@ class Choice(models.Model):
   choice = models.TextField()
   question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-class User_Attribute(models.Model):
+class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category_id = models.ForeignKey(Category, on_delete=models.PROTECT)
@@ -45,7 +45,7 @@ class Job(models.Model):
   role = models.CharField(max_length=250, null=True)
   user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class Job_Attribute(models.Model):
+class JobAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   attribute_name = models.CharField(max_length=250)
@@ -59,7 +59,7 @@ class Content(models.Model):
   description = models.CharField(max_length=250)
   copy = models.TextField()
 
-class PeristantSession(models.Model):
+class PersistantSession(models.Model):
   user_id = models.ForeignKey(User, unique=True, blank=False, on_delete=models.CASCADE)
   token = models.CharField(max_length=1000)
   updated_at = models.DateTimeField(auto_now = True)

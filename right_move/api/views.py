@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, User_Attribute, Job, Job_Attribute, PeristantSession
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession
 import random
 import string
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
@@ -80,7 +80,7 @@ def self_authenticate(request):
     if AUTH in request.headers:
         ## clean up the token
         token = request.headers[AUTH].replace("Bearer ","").strip() ## this "Bearer <token>" format is standard auth for a token
-        user = PersistantSession.objects.get(token=token).user
+        user = PersistantSession.objects.get(token=token).user_id
         return user
     else:
         raise ValueError(f"{AUTH} is required!")
