@@ -58,7 +58,7 @@ def login(request):
     token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(100))
 
     session = PersistantSession.objects.update_or_create(
-        user_id = authed_user,
+        user = authed_user,
         defaults={"token":token}
 
     )[0]
@@ -80,7 +80,7 @@ def self_authenticate(request):
     if AUTH in request.headers:
         ## clean up the token
         token = request.headers[AUTH].replace("Bearer ","").strip() ## this "Bearer <token>" format is standard auth for a token
-        user = PersistantSession.objects.get(token=token).user_id
+        user = PersistantSession.objects.get(token=token).user
         return user
     else:
         raise ValueError(f"{AUTH} is required!")
