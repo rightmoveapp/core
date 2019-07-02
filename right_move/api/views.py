@@ -36,7 +36,7 @@ def login(request):
     ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.    
     except Exception as e:
         return HttpResponseForbidden(e)
-
+    print("sucess token")
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
