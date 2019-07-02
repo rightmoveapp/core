@@ -20,13 +20,14 @@ def get_from_linkedin(auth_code:str)->dict:
 
   ## make dictionary to send over to linkedin
   params = {"grant_type":grant_type,
-            "redirect_uri":redirect_url,
+            "redirect_uri":redirect_uri,
             "client_id":client_id,
             "client_secret":client_secret,
             "code":auth_code}
 
   ##Post to linkedin to receive token
   response = requests.post(auth_token_url, params)
+
 
   token = response.json()['access_token']
 
@@ -40,8 +41,8 @@ def get_from_linkedin(auth_code:str)->dict:
 
   ##now make a useful object and return it
   result = dict()
-  result['email_address'] = email["elements"][0]["handle~"]["emailAddress"].lower()
-  result['last_name'] = basics['localizedLasttName'].lower()
-  result['first_name'] = basics['localizedFirsttName'].lower()
+  result['email'] = email["elements"][0]["handle~"]["emailAddress"].lower()
+  result['last_name'] = basics['localizedLastName'].lower()
+  result['first_name'] = basics['localizedFirstName'].lower()
 
   return result

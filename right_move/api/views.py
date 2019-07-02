@@ -5,7 +5,7 @@ from api.models import Question, Content, Category, Subcategory, Choice, UserAtt
 import random
 import string
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
-# from api.utils import get_from_linkedin
+from api.utils.login import get_from_linkedin
 
 
 class UserViewSet(ModelViewSet):
@@ -21,9 +21,6 @@ class QuestionViewSet(ModelViewSet):
   queryset = Question.objects.all()
   serializer_class = QuestionSerializer
 
-def get_user_from_linkedin(auth_token:str)->dict:
-    """stub """
-    return {"first_name":"kasie","last_name":"chaplick","email":"test@gmail.com"}
 
 def login(request):
     """ this is the view that will take a LinkedinCode header
@@ -35,11 +32,11 @@ def login(request):
         return HttpResponseBadRequest("LinkedinCode is a required header.")
 
     try:
-        linkedin_user = get_user_from_linkedin(auth_token)
+        linkedin_user = get_from_linkedin(auth_token)
     ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.    
-    except LinkedinSucksError as e:
-        return HttpResponseForbidden("Linkedin says no!")
-
+    except Exception as e:
+        return HttpResponseForbidden(e)
+    print("sucess token")
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
