@@ -31,6 +31,23 @@ class Choice(models.Model):
   choice = models.TextField()
   question= models.ForeignKey(Question, on_delete=models.CASCADE)
 
+class UserBasicProfile(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  birthday = models.DateField()
+  ethnicity = models.CharField(max_length=250)
+  address_1 = models.CharField(max_length=250)
+  address_2 = models.CharField(max_length=250)
+  city = models.CharField(max_length=250)
+  state = models.CharField(max_length=250)
+  zipcode = models.CharField(max_length=250)
+  education = models.CharField(max_length=250)
+  gender = models.CharField(max_length=250)
+  years_experience = models.IntegerField()
+  relationship_status = models.CharField(max_length=250)
+  num_dependents = models.IntegerField()
+  sexual_orientation = models..CharField(max_length=250)
+
 class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
@@ -46,6 +63,7 @@ class Job(models.Model):
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
   score = models.DecimalField(decimal_places=2,max_digits=3)
+  is_current = models.Boolean(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class JobAttribute(models.Model):
