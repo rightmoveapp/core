@@ -12,7 +12,10 @@ router.register(r'questions',views.QuestionViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/',include('rest_framework.urls', namespace='rest_framework')),
-    path('api/v1/login', views.login),
-    re_path(r'^api/v1/me', views.me),
+    path('v1/login', views.login),
+    re_path(r'^v1/me', views.me),
+    path('/v1/account/', views.userProfile),
     path('admin/', admin.site.urls),
+    
+
 ]
