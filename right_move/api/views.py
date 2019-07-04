@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile
 import random
 import string
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
 
@@ -67,21 +68,7 @@ def self_authenticate(request):
     else:
         raise ValueError(f"{AUTH} is required!")
 
-def me(request):
-    """ funtion to tell the requester
-    all about him/her/itself."""
-
-    try:
-        user = self_authenticate(request)
-    except ValueError as e:
-        return HttpResponseBadRequest(e)
-
-    ## eventually we want to do lots of lookup
-    ## and return a fat json object here.
-    ## for now just tell him/her/it their first name.
-    return HttpResponse(f"Logged in as user {user.first_name}")
-
-def userProfile(request):
+def user_profile(request):
   response = dict()
 
 ##call the authenticate object to get a user object
@@ -94,15 +81,12 @@ def userProfile(request):
   response["last_name"] = user.last_name
   response["email"] = user.email
 
-  UserBasics.objects.filter(user = user).values('birthday')
-  response["birthday"] = UserBasics.birthday
+  response["birthday"] = user.userbasicprofile.birthday
 
-  userattributes = UserAttribute.objects.filter(user = user).values('category', 'category_value')
-  response["userattributes"] = userattributes
+  response["userattributes"] = list(user.userattribute_set.values('category', 'category_value'))
 
-  jobs = Job.objects.filter(user=user).values('company_name','role','score','salary','is_current')
 
-  response["jobs"] = jobs
+  response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
 
   return JsonResponse(response)
 

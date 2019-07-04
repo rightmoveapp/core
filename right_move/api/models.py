@@ -47,7 +47,7 @@ class UserBasicProfile(models.Model):
   relationship_status = models.CharField(max_length=250)
   num_dependents = models.IntegerField()
   sexual_orientation = models.CharField(max_length=250)
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key = True)
 
 class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -63,6 +63,7 @@ class Job(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
+  salary = models.FloatField( null=True)
   score = models.DecimalField(decimal_places=2,max_digits=3, null=True)
   is_current = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=250, null=True),
         ),
         migrations.CreateModel(
-            name='UserBasicProfile',
+            name='userbasicprofile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
