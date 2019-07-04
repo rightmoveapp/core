@@ -46,15 +46,16 @@ class UserBasicProfile(models.Model):
   years_experience = models.IntegerField()
   relationship_status = models.CharField(max_length=250)
   num_dependents = models.IntegerField()
-  sexual_orientation = models..CharField(max_length=250)
+  sexual_orientation = models.CharField(max_length=250)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
-  category_value = models.CharField(max_length=250)
-  subcategory_value = models.CharField(max_length=250)
+  category_value = models.CharField(max_length=250, null=True)
+  subcategory_value = models.CharField(max_length=250, null=True)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Job(models.Model):
@@ -62,8 +63,8 @@ class Job(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
-  score = models.DecimalField(decimal_places=2,max_digits=3)
-  is_current = models.Boolean(default=False)
+  score = models.DecimalField(decimal_places=2,max_digits=3, null=True)
+  is_current = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class JobAttribute(models.Model):

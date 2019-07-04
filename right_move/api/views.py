@@ -7,21 +7,6 @@ import string
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
 
-
-class UserViewSet(ModelViewSet):
-  # API endpoint that allows users to be views or edited
-  queryset = User.objects.all().order_by('-date_joined')
-  serializer_class = UserSerializer
-
-class GroupViewSet(ModelViewSet):
-  queryset = Group.objects.all()
-  serializer_class = GroupSerializer
-
-class QuestionViewSet(ModelViewSet):
-  queryset = Question.objects.all()
-  serializer_class = QuestionSerializer
-
-
 def login(request):
     """ this is the view that will take a LinkedinCode header
     and return the app cookie token.
@@ -33,7 +18,7 @@ def login(request):
 
     try:
         linkedin_user = get_from_linkedin(auth_token)
-    ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.    
+    ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.
     except Exception as e:
         return HttpResponseForbidden(e)
     print("sucess token")
@@ -91,7 +76,33 @@ def me(request):
     except ValueError as e:
         return HttpResponseBadRequest(e)
 
-    ## eventually we want to do lots of lookup 
+    ## eventually we want to do lots of lookup
     ## and return a fat json object here.
     ## for now just tell him/her/it their first name.
     return HttpResponse(f"Logged in as user {user.first_name}")
+
+def userProfile(request):
+  response = dict()
+
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  response["first_name"] = user.first_name
+  response["last_name"] = user.last_name
+  response["email"] = user.email
+
+  UserBasics.objects.filter(user = user).values('birthday')
+  response["birthday"] = UserBasics.birthday
+
+  userattributes = UserAttribute.objects.filter(user = user).values('category', 'category_value')
+  response["userattributes"] = userattributes
+
+  jobs = Job.objects.filter(user=user).values('company_name','role','score','salary','is_current')
+
+  response["jobs"] = jobs
+
+  return JsonResponse(response)
+
