@@ -36,7 +36,8 @@ class UserAttribute(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   category = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
-  value = models.CharField(max_length=250)
+  category_value = models.CharField(max_length=250)
+  subcategory_value = models.CharField(max_length=250)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Job(models.Model):
@@ -44,6 +45,7 @@ class Job(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
+  score = models.DecimalField(decimal_places=2,max_digits=3)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class JobAttribute(models.Model):
