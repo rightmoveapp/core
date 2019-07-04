@@ -1,0 +1,53 @@
+{
+  "email":"harryp@hogwarts.com",
+  "first_name": "Harry",
+  "last_name":"Potter",
+  "birthday": "07/31/1980",
+  "questions_answered": "23",
+
+  "userattribute": [
+    {
+      "category_name":"Financial Health",
+      "category_value": "20"
+    },
+    {
+      "category_name":"Investment at Home",
+      "category_value": "30"
+    },
+    {
+      "category_name":"Leadership Opportunity",
+      "category_value": "10"
+    },
+    {
+      "category_name":"Purpose",
+      "category_value": "5"
+    }
+  ],
+
+  "job": [
+    {
+      "company_name": "Ministry of Magic",
+      "role": "Auror",
+      "score":"0.85",
+      "salary":"100",
+      "is_current":true
+
+    },
+    {
+      "company_name": "Hogwarts",
+      "role": "Professor",
+      "score":"0.65",
+      "salary":"100",
+      "is_current":false
+
+    },
+    {
+      "company_name": "Three Broomsticks",
+      "role": "Bartender",
+      "score":"0.23",
+      "salary":"100",
+      "is_current":false
+
+    }
+  ]
+}
