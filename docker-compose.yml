@@ -40,6 +40,8 @@ services:
       - DATABASE_NAME=django
       - DATABASE_PASSWORD=django
       - DATABASE_USER=django
+      - REDSTAPLER_LINKEDIN_SECRET=${REDSTAPLER_LINKEDIN_SECRET}
+      - REDSTAPLER_LINKEDIN_CLIENT_ID=${REDSTAPLER_LINKEDIN_CLIENT_ID}
 
     ## map port 8000 inside the container to port 8000 on your computer
     ports:
