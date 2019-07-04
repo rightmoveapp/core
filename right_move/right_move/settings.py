@@ -10,8 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from django.core.exceptions import ImproperlyConfigured
+
 import os
 from corsheaders.defaults import default_headers
+
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = f"Required environment variable {var_name} is not set."
+        raise ImproperlyConfigured(error_msg)
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,11 +65,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+<<<<<<< HEAD
 #TODO: remove localhost for production! 
 CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "https://redstapler.app",]
 CORS_ALLOW_HEADERS = default_headers + (
             'LinkedinCode',
             )
+=======
+>>>>>>> bbf3dd3c87828457e66dcbcaa48950ed88730649
 
 ROOT_URLCONF = 'right_move.urls'
 
@@ -86,10 +100,14 @@ WSGI_APPLICATION = 'right_move.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_env_variable('DATABASE_NAME'),
+        'USER': get_env_variable('DATABASE_USER'),
+        'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
+        'HOST': 'django_db',
+        'PORT': '5432',
+                }
     }
-}
 
 
 # Password validation

@@ -3,4 +3,5 @@ djangorestframework==3.9.4
 django-filter==2.1.0
 django-allauth==0.39.1
 django-rest-auth==0.9.5
+requests==2.22.0
 django-cors-headers==3.0.2
