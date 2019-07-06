@@ -7,22 +7,23 @@ import string
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
+import pprint
+from pprint import pformat
 
 def login(request):
-    """ this is the view that will take a LinkedinCode header
+    """ this is the view that will take a Authorization header
     and return the app cookie token.
     we then use that token for every view we want secured via the self_authenticate function
     below."""
-    auth_token = request.headers.get('LinkedinCode',None)
+    auth_token = request.headers.get('Authorization',None).replace('Bearer ',"").strip()
     if auth_token is None:
-        return HttpResponseBadRequest("LinkedinCode is a required header.")
+        return HttpResponseBadRequest("Authorization is a required header.")
 
     try:
         linkedin_user = get_from_linkedin(auth_token)
     ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.
     except Exception as e:
-        return HttpResponseForbidden(e)
-    print("sucess token")
+        return HttpResponseForbidden(f'error form getlinkedin is {e}')
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
