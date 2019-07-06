@@ -21,14 +21,16 @@ class Subcategory(models.Model):
 class Question(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  body = models.TextField()
+  question_text = models.TextField()
   category = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
+  input_type = models.TextField()
+
 
 class Choice(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  choice = models.TextField()
+  choice_text = models.TextField()
   question= models.ForeignKey(Question, on_delete=models.CASCADE)
 
 class UserBasicProfile(models.Model):
@@ -48,6 +50,14 @@ class UserBasicProfile(models.Model):
   num_dependents = models.IntegerField()
   sexual_orientation = models.CharField(max_length=250)
   user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key = True)
+
+class UserAnswers(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  choice = models.TextField()
+
+
 
 class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
