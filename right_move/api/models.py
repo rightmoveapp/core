@@ -21,23 +21,51 @@ class Subcategory(models.Model):
 class Question(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  body = models.TextField()
+  question_text = models.TextField()
   category = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
+  input_type = models.TextField()
+
 
 class Choice(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  choice = models.TextField()
+  choice_text = models.TextField()
   question= models.ForeignKey(Question, on_delete=models.CASCADE)
+
+class UserBasicProfile(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  birthday = models.DateField()
+  ethnicity = models.CharField(max_length=250)
+  address_1 = models.CharField(max_length=250)
+  address_2 = models.CharField(max_length=250)
+  city = models.CharField(max_length=250)
+  state = models.CharField(max_length=250)
+  zipcode = models.CharField(max_length=250)
+  education = models.CharField(max_length=250)
+  gender = models.CharField(max_length=250)
+  years_experience = models.IntegerField()
+  relationship_status = models.CharField(max_length=250)
+  num_dependents = models.IntegerField()
+  sexual_orientation = models.CharField(max_length=250)
+  user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key = True)
+
+class UserAnswers(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  choice = models.TextField()
+
+
 
 class UserAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category = models.ForeignKey(Category, on_delete=models.PROTECT)
   subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
-  category_value = models.CharField(max_length=250)
-  subcategory_value = models.CharField(max_length=250)
+  category_value = models.CharField(max_length=250, null=True)
+  subcategory_value = models.CharField(max_length=250, null=True)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Job(models.Model):
@@ -45,7 +73,9 @@ class Job(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
-  score = models.DecimalField(decimal_places=2,max_digits=3)
+  salary = models.FloatField( null=True)
+  score = models.DecimalField(decimal_places=2,max_digits=3, null=True)
+  is_current = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class JobAttribute(models.Model):

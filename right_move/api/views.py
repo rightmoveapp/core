@@ -1,42 +1,29 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile
 import random
 import string
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
-
-
-class UserViewSet(ModelViewSet):
-  # API endpoint that allows users to be views or edited
-  queryset = User.objects.all().order_by('-date_joined')
-  serializer_class = UserSerializer
-
-class GroupViewSet(ModelViewSet):
-  queryset = Group.objects.all()
-  serializer_class = GroupSerializer
-
-class QuestionViewSet(ModelViewSet):
-  queryset = Question.objects.all()
-  serializer_class = QuestionSerializer
-
+import pprint
+from pprint import pformat
 
 def login(request):
-    """ this is the view that will take a LinkedinCode header
+    """ this is the view that will take a Authorization header
     and return the app cookie token.
     we then use that token for every view we want secured via the self_authenticate function
     below."""
-    auth_token = request.headers.get('LinkedinCode',None)
+    auth_token = request.headers.get('Authorization',None).replace('Bearer ',"").strip()
     if auth_token is None:
-        return HttpResponseBadRequest("LinkedinCode is a required header.")
+        return HttpResponseBadRequest("Authorization is a required header.")
 
     try:
         linkedin_user = get_from_linkedin(auth_token)
-    ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.    
+    ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.
     except Exception as e:
-        return HttpResponseForbidden(e)
-    print("sucess token")
+        return HttpResponseForbidden(f'error form getlinkedin is {e}')
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
@@ -82,16 +69,25 @@ def self_authenticate(request):
     else:
         raise ValueError(f"{AUTH} is required!")
 
-def me(request):
-    """ funtion to tell the requester
-    all about him/her/itself."""
+def user_profile(request):
+  response = dict()
 
-    try:
-        user = self_authenticate(request)
-    except ValueError as e:
-        return HttpResponseBadRequest(e)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
-    ## eventually we want to do lots of lookup 
-    ## and return a fat json object here.
-    ## for now just tell him/her/it their first name.
-    return HttpResponse(f"Logged in as user {user.first_name}")
+  response["first_name"] = user.first_name
+  response["last_name"] = user.last_name
+  response["email"] = user.email
+
+  response["birthday"] = user.userbasicprofile.birthday
+
+  response["userattributes"] = list(user.userattribute_set.values('category', 'category_value'))
+
+
+  response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
+
+  return JsonResponse(response)
+
