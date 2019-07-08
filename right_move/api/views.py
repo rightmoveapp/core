@@ -98,10 +98,10 @@ def user_attr_questions(request):
   response = dict()
   user = User.objects.get(id=1)
 ##call the authenticate object to get a user object
-# try:
-#   user = self_authenticate(request)
-# except ValueError as e:
-#   return HttpResponseBadRequest(e)
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
   response["questionsAndChoices"] = list()
   questions = Question.objects.all().values('id','question_text','input_type','placeholder')
@@ -109,7 +109,8 @@ def user_attr_questions(request):
     question["choices"] = list(Choice.objects.filter(question = question["id"]).values("id", "choice_text"))
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
-    response["questionsAndChoices"].append(question)
+    if not user.useranswers_set.filter(question = question["id"]).exists():
+      response["questionsAndChoices"].append(question)
 
   return JsonResponse(response)
 
