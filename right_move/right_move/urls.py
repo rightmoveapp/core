@@ -7,5 +7,6 @@ urlpatterns = [
     path('v1/login', views.login),
     path('api-auth/',include('rest_framework.urls', namespace='rest_framework')),
     path('v1/account', views.user_profile),
+    path('v1/userquestions', views.user_attr_questions),
     path('admin/', admin.site.urls),
 ]
