@@ -6,7 +6,6 @@ class Category(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   category_name = models.CharField(max_length=100)
-  sir = models.CharField(max_length=100)
   class Meta:
         verbose_name_plural = "Categories"
 
