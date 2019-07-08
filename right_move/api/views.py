@@ -69,6 +69,7 @@ def self_authenticate(request):
     else:
         raise ValueError(f"{AUTH} is required!")
 
+##end point to get the user profile
 def user_profile(request):
   response = dict()
 
@@ -90,4 +91,26 @@ def user_profile(request):
   response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
 
   return JsonResponse(response)
+
+##End point to get the user attribute questions
+
+def user_attr_questions(request):
+  response = dict()
+  user = User.objects.get(id=1)
+##call the authenticate object to get a user object
+# try:
+#   user = self_authenticate(request)
+# except ValueError as e:
+#   return HttpResponseBadRequest(e)
+
+  response["questionsAndChoices"] = list()
+  questions = Question.objects.all().values('id','question_text','input_type','placeholder')
+  for question in questions:
+    question["choices"] = list(Choice.objects.filter(question = question["id"]).values("id", "choice_text"))
+    for choice in question["choices"]:
+      choice["input_type"] = question["input_type"]
+    response["questionsAndChoices"].append(question)
+
+  return JsonResponse(response)
+
 
