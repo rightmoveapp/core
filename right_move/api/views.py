@@ -7,8 +7,7 @@ import string
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
-import pprint
-from pprint import pformat
+import json
 
 
 def login(request):
@@ -115,18 +114,21 @@ def user_attr_questions(request):
   return JsonResponse(response)
 
 def user_attr_answers(request):
-  response = dict()
+  print(request.body)
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
   except ValueError as e:
     return HttpResponseBadRequest(e)
+  
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  UserAnswer.objects.create(
+    question_id=data["question"],
+    answer=data["answer"],
+    user_id=user.id
+  )
 
-  UserA.objects.create(
-            title=request.POST.get('title'),
-            text=request.POST.get('text'))
-        return HttpResponse(status=201)
-
-  return JsonResponse(response)
+  return HttpResponse({"success":True})
 
 
