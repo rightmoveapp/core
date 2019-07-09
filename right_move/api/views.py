@@ -109,7 +109,7 @@ def user_attr_questions(request):
     question["choices"] = list(Choice.objects.filter(question = question["id"]).values("id", "choice_text"))
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
-    if not user.useranswers_set.filter(question = question["id"]).exists():
+    if not user.useranswer_set.filter(question = question["id"]).exists():
       response["questionsAndChoices"].append(question)
 
   return JsonResponse(response)
