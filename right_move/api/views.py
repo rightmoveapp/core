@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer
 import random
 import string
 from datetime import datetime
@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from api.utils.login import get_from_linkedin
 import pprint
 from pprint import pformat
+
 
 def login(request):
     """ this is the view that will take a Authorization header
@@ -96,7 +97,6 @@ def user_profile(request):
 
 def user_attr_questions(request):
   response = dict()
-  user = User.objects.get(id=1)
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
@@ -111,6 +111,21 @@ def user_attr_questions(request):
       choice["input_type"] = question["input_type"]
     if not user.useranswer_set.filter(question = question["id"]).exists():
       response["questionsAndChoices"].append(question)
+
+  return JsonResponse(response)
+
+def user_attr_answers(request):
+  response = dict()
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  UserA.objects.create(
+            title=request.POST.get('title'),
+            text=request.POST.get('text'))
+        return HttpResponse(status=201)
 
   return JsonResponse(response)
 
