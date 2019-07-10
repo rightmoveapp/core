@@ -23,7 +23,7 @@ def login(request):
         linkedin_user = get_from_linkedin(auth_token)
     ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.
     except Exception as e:
-        return HttpResponseForbidden(f'error form getlinkedin is {e}')
+      return HttpResponseForbidden(f'error form getlinkedin is {e}')
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
@@ -85,7 +85,7 @@ def user_profile(request):
 
   response["birthday"] = user.userbasicprofile.birthday
 
-  response["userattributes"] = list(user.userattribute_set.values('category', 'category_value'))
+  response["userattributes"] = list(user.userattribute_set.values('subcategory', 'value'))
 
 
   response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
@@ -120,7 +120,7 @@ def user_attr_answers(request):
     user = self_authenticate(request)
   except ValueError as e:
     return HttpResponseBadRequest(e)
-  
+
   data = json.loads(request.body.decode('utf8'))
   print(data)
   UserAnswer.objects.create(
