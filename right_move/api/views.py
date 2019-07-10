@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer
 import random
 import string
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
-import pprint
-from pprint import pformat
+import json
+
 
 def login(request):
     """ this is the view that will take a Authorization header
@@ -96,12 +96,11 @@ def user_profile(request):
 
 def user_attr_questions(request):
   response = dict()
-  user = User.objects.get(id=1)
 ##call the authenticate object to get a user object
-# try:
-#   user = self_authenticate(request)
-# except ValueError as e:
-#   return HttpResponseBadRequest(e)
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
   response["questionsAndChoices"] = list()
   questions = Question.objects.all().values('id','question_text','input_type','placeholder')
@@ -109,8 +108,27 @@ def user_attr_questions(request):
     question["choices"] = list(Choice.objects.filter(question = question["id"]).values("id", "choice_text"))
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
-    response["questionsAndChoices"].append(question)
+    if not user.useranswer_set.filter(question = question["id"]).exists():
+      response["questionsAndChoices"].append(question)
 
   return JsonResponse(response)
+
+def user_attr_answers(request):
+  print(request.body)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+  
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  UserAnswer.objects.create(
+    question_id=data["question"],
+    answer=data["answer"],
+    user_id=user.id
+  )
+
+  return HttpResponse({"success":True})
 
 

@@ -5,7 +5,7 @@
   "birthday": "07/31/1980",
   "questions_answered": "23",
 
-  "userattribute": [
+  "userattributes": [
     {
       "category_name":"Financial Health",
       "category_value": "20"
@@ -24,7 +24,7 @@
     }
   ],
 
-  "job": [
+  "jobs": [
     {
       "company_name": "Ministry of Magic",
       "role": "Auror",

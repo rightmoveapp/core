@@ -49,7 +49,7 @@ class UserBasicProfile(models.Model):
   sexual_orientation = models.CharField(max_length=250)
   user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key = True)
 
-class UserAnswers(models.Model):
+class UserAnswer(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
