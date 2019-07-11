@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice
 import random
 import string
 from datetime import datetime
@@ -131,4 +131,39 @@ def user_attr_answers(request):
 
   return HttpResponse({"success":True})
 
+def job_questions(request):
+  response = dict()
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  response["questionsAndChoices"] = list()
+  questions = JobQuestion.objects.all().values('id','question_text','input_type','placeholder')
+  for question in questions:
+    question["choices"] = list(JobChoice.objects.filter(question = question["id"]).values("id", "choice_text"))
+    for choice in question["choices"]:
+      choice["input_type"] = question["input_type"]
+    response["questionsAndChoices"].append(question)
+
+  return JsonResponse(response)
+
+def job_answers(request):
+  print(request.body)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  UserAnswer.objects.create(
+    question_id=data["question"],
+    answer=data["answer"],
+    user_id=user.id
+  )
+
+  return HttpResponse({"success":True})
 
