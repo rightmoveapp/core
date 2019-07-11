@@ -49,8 +49,9 @@ def login(request):
     session.save()
 
     ## respond to the request with the created token!
-    response = {}
+    response = dict()
     response["token"] = session.token
+    response["first_name"] = authed_user.first_name
     return JsonResponse(response)
 
 
