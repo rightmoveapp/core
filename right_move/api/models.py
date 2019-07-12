@@ -135,7 +135,7 @@ class JobAnswer(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
   answer = models.TextField()
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  job = models.ForeignKey(Job, on_delete=models.CASCADE)
 
 class Content(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
