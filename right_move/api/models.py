@@ -126,8 +126,8 @@ class Job(models.Model):
 class JobAttribute(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  attribute_name = models.CharField(max_length=250)
-  attribute_value = models.CharField(max_length=250)
+  subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
+  value = models.FloatField(max_length=250, null=True)
   job = models.ForeignKey(Job, on_delete=models.CASCADE)
 
 class JobAnswer(models.Model):
