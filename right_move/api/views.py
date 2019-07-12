@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice
 import random
 import string
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
-import pprint
-from pprint import pformat
+import json
+
 
 def login(request):
     """ this is the view that will take a Authorization header
@@ -23,7 +23,7 @@ def login(request):
         linkedin_user = get_from_linkedin(auth_token)
     ## this isn't a real error. fix this to match however get_user_from_linkedin handles failures.
     except Exception as e:
-        return HttpResponseForbidden(f'error form getlinkedin is {e}')
+      return HttpResponseForbidden(f'error form getlinkedin is {e}')
     ## look for the user and get him/her/it if exists, if not create new user
     """NOTE: get_or_create returns a tuple (USER, did_or_didnt_create,) with
         the user object and weather or not it had to create him/her/it.
@@ -49,8 +49,9 @@ def login(request):
     session.save()
 
     ## respond to the request with the created token!
-    response = {}
+    response = dict()
     response["token"] = session.token
+    response["first_name"] = authed_user.first_name
     return JsonResponse(response)
 
 
@@ -85,7 +86,7 @@ def user_profile(request):
 
   response["birthday"] = user.userbasicprofile.birthday
 
-  response["userattributes"] = list(user.userattribute_set.values('category', 'category_value'))
+  response["userattributes"] = list(user.userattribute_set.values('subcategory', 'value'))
 
 
   response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
@@ -96,12 +97,11 @@ def user_profile(request):
 
 def user_attr_questions(request):
   response = dict()
-  user = User.objects.get(id=1)
 ##call the authenticate object to get a user object
-# try:
-#   user = self_authenticate(request)
-# except ValueError as e:
-#   return HttpResponseBadRequest(e)
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
   response["questionsAndChoices"] = list()
   questions = Question.objects.all().values('id','question_text','input_type','placeholder')
@@ -109,8 +109,62 @@ def user_attr_questions(request):
     question["choices"] = list(Choice.objects.filter(question = question["id"]).values("id", "choice_text"))
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
+    if not user.useranswer_set.filter(question = question["id"]).exists():
+      response["questionsAndChoices"].append(question)
+
+  return JsonResponse(response)
+
+def user_attr_answers(request):
+  print(request.body)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  UserAnswer.objects.create(
+    question_id=data["question"],
+    answer=data["answer"],
+    user_id=user.id
+  )
+
+  return HttpResponse({"success":True})
+
+def job_questions(request):
+  response = dict()
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  response["questionsAndChoices"] = list()
+  questions = JobQuestion.objects.all().values('id','question_text','input_type','placeholder')
+  for question in questions:
+    question["choices"] = list(JobChoice.objects.filter(question = question["id"]).values("id", "choice_text"))
+    for choice in question["choices"]:
+      choice["input_type"] = question["input_type"]
     response["questionsAndChoices"].append(question)
 
   return JsonResponse(response)
 
+# def job_answers(request):
+#   print(request.body)
+# ##call the authenticate object to get a user object
+#   try:
+#     user = self_authenticate(request)
+#   except ValueError as e:
+#     return HttpResponseBadRequest(e)
+
+#   data = json.loads(request.body.decode('utf8'))
+#   print(data)
+#   UserAnswer.objects.create(
+#     question_id=data["question"],
+#     answer=data["answer"],
+#     user_id=user.id
+#   )
+
+#   return HttpResponse({"success":True})
 

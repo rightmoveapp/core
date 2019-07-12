@@ -44,7 +44,7 @@ class JobChoice(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   choice_text = models.TextField()
-  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  question = models.ForeignKey(JobQuestion, on_delete=models.CASCADE)
 
 class QuestionMapping(models.Model):
   question_type = models.CharField(max_length=50)
@@ -64,6 +64,7 @@ class RoleSalary(models.Model):
     maximum = models.FloatField()
     standardized_value = models.FloatField()
     multiplier = models.FloatField()
+  ordinal_reverse = models.BooleanField(null=True)
 
 class UserBasicProfile(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -91,7 +92,7 @@ class ZipcodeDetail(models.Model):
   state = models.CharField(max_length=100)
 
 
-class UserAnswers(models.Model):
+class UserAnswer(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -128,6 +129,13 @@ class JobAttribute(models.Model):
   attribute_name = models.CharField(max_length=250)
   attribute_value = models.CharField(max_length=250)
   job = models.ForeignKey(Job, on_delete=models.CASCADE)
+
+class JobAnswer(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  answer = models.TextField()
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Content(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)

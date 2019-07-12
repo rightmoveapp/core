@@ -1,28 +1,22 @@
 {
   "questionsAndChoices": [
     {
-      "question": [
-        {
           "id": "1",
           "question_text": "What is your birthday?",
           "category": "Basic",
           "input_type": "date",
-          "placeholder": "07/31/1980"
-        }
-      ],
+          "placeholder": "07/31/1980",
+
       "choices": []
     },
     {
-      "question": [
-        {
           "id": "2",
           "question_text": "What are your preferred pronouns?",
           "category": "Basic",
           "input_type": "radio",
           "placeholder":"",
-          "explanation":"Because we fucking asked"
-        }
-      ],
+          "explanation":"Because we fucking asked",
+
       "choices": [
         {
           "id": "1",
