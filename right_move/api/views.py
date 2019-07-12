@@ -150,21 +150,21 @@ def job_questions(request):
 
   return JsonResponse(response)
 
-def job_answers(request):
-  print(request.body)
-##call the authenticate object to get a user object
-  try:
-    user = self_authenticate(request)
-  except ValueError as e:
-    return HttpResponseBadRequest(e)
+# def job_answers(request):
+#   print(request.body)
+# ##call the authenticate object to get a user object
+#   try:
+#     user = self_authenticate(request)
+#   except ValueError as e:
+#     return HttpResponseBadRequest(e)
 
-  data = json.loads(request.body.decode('utf8'))
-  print(data)
-  UserAnswer.objects.create(
-    question_id=data["question"],
-    answer=data["answer"],
-    user_id=user.id
-  )
+#   data = json.loads(request.body.decode('utf8'))
+#   print(data)
+#   UserAnswer.objects.create(
+#     question_id=data["question"],
+#     answer=data["answer"],
+#     user_id=user.id
+#   )
 
-  return HttpResponse({"success":True})
+#   return HttpResponse({"success":True})
 
