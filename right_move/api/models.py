@@ -50,7 +50,7 @@ class QuestionMapping(models.Model):
   question_type = models.CharField(max_length=50)
   question_id = models.IntegerField()
   subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
-  ordinal_reverse = models.BooleanField()
+  ordinal_reverse = models.BooleanField(null=True)
 
 class Role(models.Model):
   role_name = models.CharField(max_length=255)
@@ -118,7 +118,7 @@ class Job(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   company_name = models.CharField(max_length=250, null=True)
   role = models.CharField(max_length=250, null=True)
-  salary = models.FloatField( null=True)
+  salary = models.FloatField(null=True)
   score = models.DecimalField(decimal_places=2,max_digits=3, null=True)
   is_current = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
