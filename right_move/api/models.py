@@ -7,7 +7,7 @@ class Category(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   category_name = models.CharField(max_length=100)
   class Meta:
-        verbose_name_plural = "Categories"
+    verbose_name_plural = "Categories"
 
 class Subcategory(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -16,7 +16,7 @@ class Subcategory(models.Model):
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
   heuristic_value = models.FloatField()
   class Meta:
-        verbose_name_plural = "Subcategories"
+    verbose_name_plural = "Subcategories"
 
 class Question(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -53,17 +53,17 @@ class QuestionMapping(models.Model):
   ordinal_reverse = models.BooleanField()
 
 class Role(models.Model):
-    role_name = models.CharField(max_length=255)
+  role_name = models.CharField(max_length=255)
 
 class RoleSalary(models.Model):
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
-    minimum = models.FloatField()
-    average = models.FloatField()
-    maximum = models.FloatField()
-    standardized_value = models.FloatField()
-    multiplier = models.FloatField()
+  city = models.CharField(max_length=255)
+  state = models.CharField(max_length=255)
+  role = models.ForeignKey(Role, on_delete=models.CASCADE)
+  minimum = models.FloatField()
+  average = models.FloatField()
+  maximum = models.FloatField()
+  standardized_value = models.FloatField()
+  multiplier = models.FloatField()
   ordinal_reverse = models.BooleanField(null=True)
 
 class UserBasicProfile(models.Model):
