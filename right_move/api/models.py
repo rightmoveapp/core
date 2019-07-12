@@ -14,10 +14,19 @@ class Subcategory(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   subcategory_name = models.CharField(max_length=100)
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
+  heuristic_value = models.FloatField()
   class Meta:
         verbose_name_plural = "Subcategories"
 
 class Question(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  question_text = models.TextField()
+  subcategory = models.ForeignKey(Subcategory, on_delete=models.PROTECT)
+  input_type = models.TextField()
+  placeholder = models.TextField()
+
+class JobQuestion(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
   question_text = models.TextField()
@@ -30,6 +39,18 @@ class Choice(models.Model):
   updated_at = models.DateTimeField(auto_now = True)
   choice_text = models.TextField()
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+class JobChoice(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  choice_text = models.TextField()
+  question = models.ForeignKey(JobQuestion, on_delete=models.CASCADE)
+
+class QuestionMapping(models.Model):
+  question_type = models.CharField(max_length=50)
+  question_id = models.IntegerField()
+  subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
+  ordinal_reverse = models.BooleanField(null=True)
 
 class UserBasicProfile(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -79,6 +100,13 @@ class JobAttribute(models.Model):
   attribute_name = models.CharField(max_length=250)
   attribute_value = models.CharField(max_length=250)
   job = models.ForeignKey(Job, on_delete=models.CASCADE)
+
+class JobAnswer(models.Model):
+  created_at = models.DateTimeField(auto_now_add = True)
+  updated_at = models.DateTimeField(auto_now = True)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  answer = models.TextField()
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Content(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
