@@ -81,6 +81,7 @@ raw_salary as(
 	select
 		u.user_id as user_id,
 		r.average as average_salary,
+		r.minimum as minimum_salary,
 		r.standardized_value,
 		r.multiplier
 	from 
@@ -118,8 +119,8 @@ desired_salary as (
 ),
 adjusted_salary as (
 	select
-		(coalesce((desired_salary * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
-		((coalesce((desired_salary * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
+		(coalesce(((desired_salary - minumum_salary) * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
+		((coalesce(((desired_salary - minumum_salary) * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
 		
 	from
 		raw_salary
@@ -313,6 +314,7 @@ raw_salary as(
 	select
 		u.user_id as user_id,
 		r.average as average_salary,
+		r.minimum as minimum_salary,
 		r.standardized_value,
 		r.multiplier
 	from 
@@ -350,8 +352,8 @@ desired_salary as (
 ),
 adjusted_salary as (
 	select
-		(coalesce((desired_salary * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
-		((coalesce((desired_salary * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
+		(coalesce(((desired_salary - minumum_salary) * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
+		((coalesce(((desired_salary - minumum_salary) * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
 		
 	from
 		raw_salary

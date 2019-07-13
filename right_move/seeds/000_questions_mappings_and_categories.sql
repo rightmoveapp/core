@@ -2646,6 +2646,18 @@ api_questionmapping (
 VALUES
 (
         'job',
+        5,
+        10,
+        TRUE
+    ),
+(
+        'job',
+        4,
+        9,
+        FALSE
+    ),
+(
+        'job',
         1,
         1,
         FALSE
