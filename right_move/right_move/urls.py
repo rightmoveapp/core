@@ -10,5 +10,7 @@ urlpatterns = [
     path('v1/userquestions', views.user_attr_questions),
     path('v1/userattranswers', views.user_attr_answers),
     path('v1/jobquestions', views.job_questions),
+    path('v1/userbasicanswers', views.user_basic_profile),
+    path('v1/userjobanswers', views.job_answers),
     path('admin/', admin.site.urls),
 ]

@@ -134,7 +134,7 @@ def user_attr_answers(request):
 
 def job_questions(request):
   response = dict()
-##call the authenticate object to get a user object
+#call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
   except ValueError as e:
@@ -168,3 +168,36 @@ def job_questions(request):
 
 #   return HttpResponse({"success":True})
 
+def user_basic_profile(request):
+  print(request.body)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  data = json.loads(request.body.decode('utf8'))
+
+  UserBasicProfile.objects.create(
+    # question_id=data["question"],
+    # answer=data["answer"],
+    user_id=user.id,
+    birthday=data["questionsAndAnswers"]["birthday"],
+    ethnicity = data["questionsAndAnswers"]["race_ethnicity"],
+    # address_1 = models.CharField(max_length=250)
+    # address_2 = models.CharField(max_length=250)
+    # city = models.CharField(max_length=250)
+    # state = models.CharField(max_length=250)
+    pronouns = data["questionsAndAnswers"]["pronouns"],
+    zipcode = data["questionsAndAnswers"]["zipcode"],
+    area_code = data["questionsAndAnswers"]["areacode"],
+    education = data["questionsAndAnswers"]["education"],
+    gender = data["questionsAndAnswers"]["gender"],
+    role = data["questionsAndAnswers"]["role"],
+    years_experience = data["questionsAndAnswers"]["years_experience"],
+    relationship_status = data["questionsAndAnswers"]["relationship_status"],
+    num_dependents = data["questionsAndAnswers"]["num_dependents"],
+    # sexual_orientation = models.CharField(max_length=250)
+  )
+
+  return HttpResponse({"success":True})
