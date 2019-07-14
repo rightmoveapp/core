@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 from django.core.exceptions import ImproperlyConfigured
 
 import os
+from corsheaders.defaults import default_headers
 
 def get_env_variable(var_name):
     try:
@@ -42,7 +43,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'corsheaders',
     'rest_framework',
 ]
 
@@ -58,15 +59,20 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    ##TODO: this is a hole that needs to be patched
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000","https://redstapler.app",]
+<<<<<<< HEAD
+#TODO: remove localhost for production! 
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "https://redstapler.app",]
+CORS_ALLOW_HEADERS = default_headers + (
+            'LinkedinCode',
+            )
+=======
+>>>>>>> bbf3dd3c87828457e66dcbcaa48950ed88730649
 
 ROOT_URLCONF = 'right_move.urls'
 
