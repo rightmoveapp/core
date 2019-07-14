@@ -70,7 +70,8 @@ def self_authenticate(request):
     else:
         raise ValueError(f"{AUTH} is required!")
 
-##end point to get the user profile
+
+######end point to get the user profile################################################
 def user_profile(request):
   response = dict()
 
@@ -93,7 +94,8 @@ def user_profile(request):
 
   return JsonResponse(response)
 
-##End point to get the user attribute questions
+
+##################End point to get the user attribute questions################################
 
 def user_attr_questions(request):
   response = dict()
@@ -114,6 +116,8 @@ def user_attr_questions(request):
 
   return JsonResponse(response)
 
+
+################## End point to post the user attribute answers ################################
 def user_attr_answers(request):
   print(request.body)
 ##call the authenticate object to get a user object
@@ -132,6 +136,8 @@ def user_attr_answers(request):
 
   return HttpResponse({"success":True})
 
+
+################## End point to get the job questions ################################
 def job_questions(request):
   response = dict()
 #call the authenticate object to get a user object
@@ -147,12 +153,13 @@ def job_questions(request):
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
     response["questionsAndChoices"].append(question)
-  print(Role.objects.all().values("role_name"))
   role_names = list(Role.objects.all().values("role_name"))
   response["role_names"] = role_names
 
   return JsonResponse(response)
 
+
+################## End point to post a new job and its answers ################################
 def job_answers(request):
   print(request.body)
 ##call the authenticate object to get a user object
@@ -163,16 +170,33 @@ def job_answers(request):
 
   data = json.loads(request.body.decode('utf8'))
   print(data)
-  UserAnswer.objects.create(
-    question_id=data["question"],
-    answer=data["answer"],
-    user_id=user.id
-  )
-
+  # job = Job.objects.create(
+  #   company_name = data["companyName"],
+  #   role = list(Role.objects.filter(role_name = data["role_name"]).values("role_name")),
+  #   user_id=user.id
+  #   city = data["city"],
+  #   zipcode = data["zipcode"],
+  #   salary = data["salary"],
+  #   is_current = data["is_current"],
+  # )
+  # job.save()
+  # jobQAndAs = data["questionsAndAnswers"]
+  # JobAnswer.objects.create(
+  #   for jobAnswers in jobQAndAs
+  #     question_id=,
+  #     answer=data["answer"],
+  #     job_id=job.id
+  # )
+  #     questionsAndAnswers: this.state.choices,
+  #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  # answer = models.TextField()
+  # job = models.ForeignKey(Job, on_delete=models.CASCADE)
   return HttpResponse({"success":True})
 
+################## End point to post a new user basic profile ################################
 def user_basic_profile(request):
   print(request.body)
+  
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
@@ -180,7 +204,7 @@ def user_basic_profile(request):
     return HttpResponseBadRequest(e)
 
   data = json.loads(request.body.decode('utf8'))
-
+  print(list(Role.objects.filter(role_name = data["role_name"]).values("role_name")))
   UserBasicProfile.objects.create(
     # question_id=data["question"],
     # answer=data["answer"],
@@ -196,11 +220,10 @@ def user_basic_profile(request):
     area_code = data["questionsAndAnswers"]["areacode"],
     education = data["questionsAndAnswers"]["education"],
     gender = data["questionsAndAnswers"]["gender"],
-    role = data["questionsAndAnswers"]["role"],
+    role = Role.objects.get(role_name = data["role_name"]),
     years_experience = data["questionsAndAnswers"]["years_experience"],
     relationship_status = data["questionsAndAnswers"]["relationship_status"],
     num_dependents = data["questionsAndAnswers"]["num_dependents"],
-    # sexual_orientation = models.CharField(max_length=250)
   )
 
   return HttpResponse({"success":True})

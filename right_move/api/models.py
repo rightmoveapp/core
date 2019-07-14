@@ -141,7 +141,7 @@ class JobAttribute(models.Model):
 class JobAnswer(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
   updated_at = models.DateTimeField(auto_now = True)
-  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+  question = models.ForeignKey(JobQuestion, on_delete=models.CASCADE)
   answer = models.TextField()
   job = models.ForeignKey(Job, on_delete=models.CASCADE)
 

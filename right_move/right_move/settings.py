@@ -59,20 +59,17 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-<<<<<<< HEAD
 #TODO: remove localhost for production! 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "https://redstapler.app",]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://localhost:8000","https://redstapler.app",]
 CORS_ALLOW_HEADERS = default_headers + (
             'LinkedinCode',
             )
-=======
->>>>>>> bbf3dd3c87828457e66dcbcaa48950ed88730649
 
 ROOT_URLCONF = 'right_move.urls'
 
