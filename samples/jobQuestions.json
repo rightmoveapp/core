@@ -1,0 +1,493 @@
+{
+  "questionsAndChoices": [
+    {
+      "id": 1,
+      "question_text": "The remote work policy for this role is:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 1,
+          "choice_text": "Fully remote.",
+          "input_type": "radio"
+        },
+        {
+          "id": 2,
+          "choice_text": "All but 1-2 days a month.",
+          "input_type": "radio"
+        },
+        {
+          "id": 3,
+          "choice_text": "3-4 days a week.",
+          "input_type": "radio"
+        },
+        {
+          "id": 4,
+          "choice_text": "1-2 days a week.",
+          "input_type": "radio"
+        },
+        {
+          "id": 5,
+          "choice_text": "Zero remote, 100% on-site.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question_text": "If I do not take this role, it would still be cool to hang out with at least one person I've met at this company socially.",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 6,
+          "choice_text": "For sure.",
+          "input_type": "radio"
+        },
+        {
+          "id": 7,
+          "choice_text": "Not really.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question_text": "How many people work at this company?",
+      "input_type": "text",
+      "placeholder": "please enter a number",
+      "choices": []
+    },
+    {
+      "id": 4,
+      "question_text": "My new-hire packet is most likely to include:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 8,
+          "choice_text": "A nerf gun and a t-shirt.",
+          "input_type": "radio"
+        },
+        {
+          "id": 9,
+          "choice_text": "A couple good professional books.",
+          "input_type": "radio"
+        },
+        {
+          "id": 10,
+          "choice_text": "An employee handbook.",
+          "input_type": "radio"
+        },
+        {
+          "id": 11,
+          "choice_text": "A gold-plated fountain pen.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question_text": "The techniques, technologies and skills I use in this role:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 12,
+          "choice_text": "Will be totally new to me.",
+          "input_type": "radio"
+        },
+        {
+          "id": 13,
+          "choice_text": "Will be a mix of new and stuff I know.",
+          "input_type": "radio"
+        },
+        {
+          "id": 14,
+          "choice_text": "Wil be mostly stuff I know, with a little new.",
+          "input_type": "radio"
+        },
+        {
+          "id": 15,
+          "choice_text": "Will be all old-hat for me.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question_text": "In this role I will be:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 16,
+          "choice_text": "All hands-on doing the work.",
+          "input_type": "radio"
+        },
+        {
+          "id": 17,
+          "choice_text": "Largely hands-on but also managing.",
+          "input_type": "radio"
+        },
+        {
+          "id": 18,
+          "choice_text": "Mostly managing with a little hands-on.",
+          "input_type": "radio"
+        },
+        {
+          "id": 19,
+          "choice_text": "All management and leadership.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "question_text": "How many people will I be able to learn from directly, considering only people I can identify by first name?",
+      "input_type": "text",
+      "placeholder": "please enter a number",
+      "choices": []
+    },
+    {
+      "id": 8,
+      "question_text": "I will have ___ direct reports in this role",
+      "input_type": "text",
+      "placeholder": "please enter a number",
+      "choices": []
+    },
+    {
+      "id": 9,
+      "question_text": "When discussing how I will fit into the team:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 20,
+          "choice_text": "Teammates have expressed interest in learning from me.",
+          "input_type": "radio"
+        },
+        {
+          "id": 21,
+          "choice_text": "The team is generally excited about a new peer.",
+          "input_type": "radio"
+        },
+        {
+          "id": 22,
+          "choice_text": "The team is excited to teach me new things.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "question_text": "In this role I will be:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 23,
+          "choice_text": "Calling the shots.",
+          "input_type": "radio"
+        },
+        {
+          "id": 24,
+          "choice_text": "Taking direction.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question_text": "My progression path has been outlined:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 25,
+          "choice_text": "Clearly. I know exactly how I will get promoted.",
+          "input_type": "radio"
+        },
+        {
+          "id": 26,
+          "choice_text": "Loosely. We agree what +/- 12 months will look like.",
+          "input_type": "radio"
+        },
+        {
+          "id": 27,
+          "choice_text": "As something that does not matter right now.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question_text": "When it comes to paid time off, this role:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 28,
+          "choice_text": "Has unlimited and people use it.",
+          "input_type": "radio"
+        },
+        {
+          "id": 29,
+          "choice_text": "Includes > 2 weeks off a year.",
+          "input_type": "radio"
+        },
+        {
+          "id": 30,
+          "choice_text": "Includes <= 2 weeks a year, but some.",
+          "input_type": "radio"
+        },
+        {
+          "id": 31,
+          "choice_text": "Has unlimited, but people are not able to use it.",
+          "input_type": "radio"
+        },
+        {
+          "id": 32,
+          "choice_text": "Has none.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "question_text": "The health benefits at this place are:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 33,
+          "choice_text": "Outstanding - full health, dental, vision etc.",
+          "input_type": "radio"
+        },
+        {
+          "id": 34,
+          "choice_text": "Pretty good coverage, would rate above average.",
+          "input_type": "radio"
+        },
+        {
+          "id": 35,
+          "choice_text": "Average / just OK.",
+          "input_type": "radio"
+        },
+        {
+          "id": 36,
+          "choice_text": "Poor, but something.",
+          "input_type": "radio"
+        },
+        {
+          "id": 37,
+          "choice_text": "No health & wellness coverage.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "question_text": "Does this role include non-standard perks like a gym membership, free lunches, snacks in the kitchen etc?",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 38,
+          "choice_text": "This role is pretty bare-bones as far as perks go.",
+          "input_type": "radio"
+        },
+        {
+          "id": 39,
+          "choice_text": "There are a few extra perks but they don't really impact me.",
+          "input_type": "radio"
+        },
+        {
+          "id": 40,
+          "choice_text": "The non-standard perks are cool and I will get use from them.",
+          "input_type": "radio"
+        },
+        {
+          "id": 41,
+          "choice_text": "At least one of the non-standard perks has a significant impact on my life.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "question_text": "If the company mission was a charitable organization, I would donate to it.",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 42,
+          "choice_text": "Nope.",
+          "input_type": "radio"
+        },
+        {
+          "id": 43,
+          "choice_text": "For sure.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "question_text": "Someone asks me about this role at a party:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 44,
+          "choice_text": "And telling them about it makes me feel cool.",
+          "input_type": "radio"
+        },
+        {
+          "id": 45,
+          "choice_text": "And it will likely lead to an interesting conversation.",
+          "input_type": "radio"
+        },
+        {
+          "id": 46,
+          "choice_text": "And I summarize and look for common ground with them.",
+          "input_type": "radio"
+        },
+        {
+          "id": 47,
+          "choice_text": "And I change the subject.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "question_text": "My direct supervisor in this role:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 48,
+          "choice_text": "Is still a mystery to me.",
+          "input_type": "radio"
+        },
+        {
+          "id": 49,
+          "choice_text": "Is less than engaged with this role.",
+          "input_type": "radio"
+        },
+        {
+          "id": 50,
+          "choice_text": "Is marginally engaged with this role.",
+          "input_type": "radio"
+        },
+        {
+          "id": 51,
+          "choice_text": "Is supportive and invested in this role.",
+          "input_type": "radio"
+        },
+        {
+          "id": 52,
+          "choice_text": "Is a champion for this role.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "question_text": "The average number of paid time off (PTO) days taken by employees is:",
+      "input_type": "text",
+      "placeholder": "please enter a number",
+      "choices": []
+    },
+    {
+      "id": 19,
+      "question_text": "The team this role belongs to tends to average:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 53,
+          "choice_text": "less than 30 hours a week",
+          "input_type": "radio"
+        },
+        {
+          "id": 54,
+          "choice_text": "30-40 hours a week",
+          "input_type": "radio"
+        },
+        {
+          "id": 55,
+          "choice_text": "40-50 hours a week",
+          "input_type": "radio"
+        },
+        {
+          "id": 56,
+          "choice_text": "50+ hours a week without weekends",
+          "input_type": "radio"
+        },
+        {
+          "id": 57,
+          "choice_text": "Seemingly 24/7",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "question_text": "For planning and project management, team this role belongs to uses:",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 58,
+          "choice_text": "A project management tool that the org respects and knows how to use.",
+          "input_type": "radio"
+        },
+        {
+          "id": 59,
+          "choice_text": "A project management tool that is generally used, but often circumvented.",
+          "input_type": "radio"
+        },
+        {
+          "id": 60,
+          "choice_text": "Email chains, chat, and informal todo tools.",
+          "input_type": "radio"
+        },
+        {
+          "id": 61,
+          "choice_text": "Total chaos.",
+          "input_type": "radio"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "question_text": "I would invest money in this company ____.",
+      "input_type": "radio",
+      "placeholder": "please enter a number",
+      "choices": [
+        {
+          "id": 62,
+          "choice_text": "Under no circumstances.",
+          "input_type": "radio"
+        },
+        {
+          "id": 63,
+          "choice_text": "From my \"high risk\" savings.",
+          "input_type": "radio"
+        },
+        {
+          "id": 64,
+          "choice_text": "From my retirement fund.",
+          "input_type": "radio"
+        },
+        {
+          "id": 65,
+          "choice_text": "From a loved one's retirement fund.",
+          "input_type": "radio"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "questionsAndChoices": [
+    {
+          "id": "1",
+          "question_text": "What is your birthday?",
+          "category": "Basic",
+          "input_type": "date",
+          "placeholder": "07/31/1980",
+
+      "choices": []
+    },
+    {
+          "id": "2",
+          "question_text": "What are your preferred pronouns?",
+          "category": "Basic",
+          "input_type": "radio",
+          "placeholder":"",
+          "explanation":"Because we fucking asked",
+
+      "choices": [
+        {
+          "id": "1",
+          "choice_text": "She/Her"
+        },
+        {
+          "id": "2",
+          "choice_text": "He/Him"
+        },
+        {
+          "id": "3",
+          "choice_text": "They/Them"
+        },
+        {
+          "id": "4",
+          "choice_text": "Ze/Zir"
+        },
+        {
+          "id": "5",
+          "choice_text": "I don't indentify with any of the above"
+        }
+      ]
+    }
+  ]
+}
