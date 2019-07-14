@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice, Role, RoleSalary,QuestionMapping, ZipcodeDetail, UserAttributeWeight
 import random
 import string
 from datetime import datetime
@@ -38,7 +38,7 @@ def login(request):
     authed_user.save()
 
     ## create or update session token using this crypto method
-    ## https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits/23728630#23728630 
+    ## https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits/23728630#23728630
     token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(100))
 
     session = PersistantSession.objects.update_or_create(
@@ -147,26 +147,29 @@ def job_questions(request):
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
     response["questionsAndChoices"].append(question)
+  print(Role.objects.all().values("role_name"))
+  role_names = list(Role.objects.all().values("role_name"))
+  response["role_names"] = role_names
 
   return JsonResponse(response)
 
-# def job_answers(request):
-#   print(request.body)
-# ##call the authenticate object to get a user object
-#   try:
-#     user = self_authenticate(request)
-#   except ValueError as e:
-#     return HttpResponseBadRequest(e)
+def job_answers(request):
+  print(request.body)
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
-#   data = json.loads(request.body.decode('utf8'))
-#   print(data)
-#   UserAnswer.objects.create(
-#     question_id=data["question"],
-#     answer=data["answer"],
-#     user_id=user.id
-#   )
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  UserAnswer.objects.create(
+    question_id=data["question"],
+    answer=data["answer"],
+    user_id=user.id
+  )
 
-#   return HttpResponse({"success":True})
+  return HttpResponse({"success":True})
 
 def user_basic_profile(request):
   print(request.body)

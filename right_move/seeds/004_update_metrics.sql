@@ -81,6 +81,7 @@ raw_salary as(
 	select
 		u.user_id as user_id,
 		r.average as average_salary,
+		r.minimum as minimum_salary,
 		r.standardized_value,
 		r.multiplier
 	from 
@@ -118,8 +119,8 @@ desired_salary as (
 ),
 adjusted_salary as (
 	select
-		(coalesce((desired_salary * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
-		((coalesce((desired_salary * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
+		(coalesce(((desired_salary - minimum_salary) * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
+		((coalesce(((desired_salary - minimum_salary) * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
 		
 	from
 		raw_salary
@@ -190,10 +191,10 @@ user_unweighted_vals as (
 		a.subcategory_id,
 		
 		case
-			when a.subcategory_id in (9,15,16) then ((coalesce(d.average_ord_val,0.5) * 2) + flex_rate) /3.0 
-			when a.subcategory_id = 24 then (coalesce(d.average_ord_val,0.5) + flex_rate) / 2.0
-			when a.subcategory_id = 17 then (ass.adjusted_salary_standardized)
-			when a.subcategory_id = 6 then ((coalesce(ol.rural_score,0.5) * 2 ) + flex_rate) /3.0
+			when a.subcategory_id in (9,15,16) then coalesce(((coalesce(d.average_ord_val,0.5) * 2) + flex_rate),1.5) /3.0 
+			when a.subcategory_id = 24 then coalesce((coalesce(d.average_ord_val,0.5) + flex_rate),1.0) / 2.0
+			when a.subcategory_id = 17 then coalesce((ass.adjusted_salary_standardized),0.5)
+			when a.subcategory_id = 6 then coalesce(((coalesce(ol.rural_score,0.5) * 2 ) + flex_rate),1.5) /3.0
 			else coalesce(coalesce(d.average_ord_val,0.5), a.value)
 		end as value
 	from
@@ -202,13 +203,13 @@ user_unweighted_vals as (
 		decimal_question_values_unadjusted d
 	on
 		d.subcategory_id = a.subcategory_id
-	inner join
+	left join
 		 adjusted_salary ass
 	on 1=1
-	inner join
+	left join
 		flex_rate
 	on 1=1
-	inner join
+	left join
 		office_location ol
 	on 1=1
 	group by 1,2
@@ -313,6 +314,7 @@ raw_salary as(
 	select
 		u.user_id as user_id,
 		r.average as average_salary,
+		r.minimum as minimum_salary,
 		r.standardized_value,
 		r.multiplier
 	from 
@@ -350,8 +352,8 @@ desired_salary as (
 ),
 adjusted_salary as (
 	select
-		(coalesce((desired_salary * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
-		((coalesce((desired_salary * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
+		(coalesce(((desired_salary - minimum_salary) * multiplier),standardized_value) + standardized_value) / 2.0 as adjusted_salary_standardized,
+		((coalesce(((desired_salary - minimum_salary) * multiplier),standardized_value)  + standardized_value) / 2.0) / multiplier as adjusted_salary
 		
 	from
 		raw_salary
@@ -422,10 +424,10 @@ user_unweighted_vals as (
 		a.subcategory_id,
 		
 		case
-			when a.subcategory_id in (9,15,16) then ((coalesce(d.average_ord_val,0.5) * 2) + flex_rate) /3.0 
-			when a.subcategory_id = 24 then (coalesce(d.average_ord_val,0.5) + flex_rate) / 2.0
-			when a.subcategory_id = 17 then (ass.adjusted_salary_standardized)
-			when a.subcategory_id = 6 then ((coalesce(ol.rural_score,0.5) * 2 ) + flex_rate) /3.0
+			when a.subcategory_id in (9,15,16) then coalesce(((coalesce(d.average_ord_val,0.5) * 2) + flex_rate),1.5) /3.0 
+			when a.subcategory_id = 24 then coalesce((coalesce(d.average_ord_val,0.5) + flex_rate),1) / 2.0
+			when a.subcategory_id = 17 then coalesce((ass.adjusted_salary_standardized),0.5)
+			when a.subcategory_id = 6 then coalesce(((coalesce(ol.rural_score,0.5) * 2 ) + flex_rate),1.5) /3.0
 			else coalesce(coalesce(d.average_ord_val,0.5), a.value)
 		end as value
 	from
@@ -434,13 +436,13 @@ user_unweighted_vals as (
 		decimal_question_values_unadjusted d
 	on
 		d.subcategory_id = a.subcategory_id
-	inner join
+	left join
 		 adjusted_salary ass
 	on 1=1
-	inner join
+	left join
 		flex_rate
 	on 1=1
-	inner join
+	left join
 		office_location ol
 	on 1=1
 	group by 1,2
