@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice, Role, RoleSalary,QuestionMapping, ZipcodeDetail, UserAttributeWeight
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice, JobAnswer, Role, RoleSalary,QuestionMapping, ZipcodeDetail, UserAttributeWeight
 import random
 import string
 from datetime import datetime
@@ -161,7 +161,7 @@ def job_questions(request):
 
 ################## End point to post a new job and its answers ################################
 def job_answers(request):
-  print(request.body)
+
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
@@ -170,27 +170,41 @@ def job_answers(request):
 
   data = json.loads(request.body.decode('utf8'))
   print(data)
-  # job = Job.objects.create(
-  #   company_name = data["companyName"],
-  #   role = list(Role.objects.filter(role_name = data["role_name"]).values("role_name")),
-  #   user_id=user.id
-  #   city = data["city"],
-  #   zipcode = data["zipcode"],
-  #   salary = data["salary"],
-  #   is_current = data["is_current"],
-  # )
-  # job.save()
-  # jobQAndAs = data["questionsAndAnswers"]
-  # JobAnswer.objects.create(
-  #   for jobAnswers in jobQAndAs
-  #     question_id=,
-  #     answer=data["answer"],
-  #     job_id=job.id
-  # )
-  #     questionsAndAnswers: this.state.choices,
-  #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-  # answer = models.TextField()
-  # job = models.ForeignKey(Job, on_delete=models.CASCADE)
+  if data["isCurrent"] == "yes":
+    isCurrent = True
+  elif data["isCurrent"] == "no":
+    isCurrent = False
+  job = Job.objects.create(
+    company_name = data["companyName"],
+    role = Role.objects.get(role_name = data["role_name"]),
+    user_id=user.id,
+    city = data["city"],
+    zipcode = data["zipcode"],
+    salary = data["salary"],
+    is_current = isCurrent,
+  )
+  job.save()
+
+  jobQAndAs = data["questionsAndAnswers"]
+  print(jobQAndAs)
+  # jobAttrs = list()
+  # for pair in jobQAndAs
+  #   jobAttrs.append(JobAnswer(question_id=pair[]))
+
+  # [Category(name="God"),
+  #    Category(name="Demi God"),
+  #    Category(name="Mortal")]
+
+  for key, value in jobQAndAs.items():
+    print(key)
+    print(value)
+    # print(jobQAndAs.items())
+    JobAnswer.objects.create(
+      question_id=key,
+      answer=value,
+      job_id=job.id
+    )
+
   return HttpResponse({"success":True})
 
 ################## End point to post a new user basic profile ################################
