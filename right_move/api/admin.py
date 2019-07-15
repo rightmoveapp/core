@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile,UserAnswer,JobQuestion,JobChoice
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile,UserAnswer,JobQuestion,JobChoice, JobAnswer
 
 admin.site.register(Question)
 admin.site.register(Content)
@@ -14,3 +14,4 @@ admin.site.register(UserBasicProfile)
 admin.site.register(UserAnswer)
 admin.site.register(JobQuestion)
 admin.site.register(JobChoice)
+admin.site.register(JobAnswer)

@@ -127,7 +127,7 @@ class Job(models.Model):
   state = models.CharField(max_length=250)
   zipcode = models.CharField(max_length=250)
   salary = models.FloatField(null=True)
-  score = models.FloatField()
+  score = models.FloatField(null=True)
   is_current = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
