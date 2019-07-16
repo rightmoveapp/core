@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
 from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice, JobAnswer, Role, RoleSalary,QuestionMapping, ZipcodeDetail, UserAttributeWeight
+from django.db.models import F
 import random
 import string
 from datetime import datetime
@@ -92,10 +93,28 @@ def user_profile(request):
 
 
   response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
-  print(list(user.job_set.values('company_name','role','score','salary','is_current')))
+  
 
   return JsonResponse(response)
 
+################## End point to post a new user basic profile #################################
+def user_graph(request):
+  response = dict()
+
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  response["name"] = "flare"
+  response["children"] = list()
+  categories = Category.objects.all().annotate(name=F('category_name')).values("id","name")
+  for category in categories:
+    category["children"] = list(Subcategory.objects.filter(category = category["id"]).annotate(name=F('subcategory_name')).values("name", "heuristic_value"))
+    response["children"].append(category)
+
+  return JsonResponse(response)
 
 ##################End point to get the user attribute questions################################
 
@@ -121,7 +140,7 @@ def user_attr_questions(request):
 
 ################## End point to post the user attribute answers ################################
 def user_attr_answers(request):
-  print(request.body)
+  
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
@@ -129,7 +148,7 @@ def user_attr_answers(request):
     return HttpResponseBadRequest(e)
 
   data = json.loads(request.body.decode('utf8'))
-  print(data)
+  
   UserAnswer.objects.create(
     question_id=data["question"],
     answer=data["answer"],
@@ -140,9 +159,9 @@ def user_attr_answers(request):
     datascience.update_user_metrics(user.id)
   else:
     jobs = user.job_set.all()
-    print(jobs)
+    
     for job in jobs:
-      print(job.id)
+      
       datascience.do_science(user.id, job.id)
   return HttpResponse({"success":True})
 
@@ -179,7 +198,7 @@ def job_answers(request):
     return HttpResponseBadRequest(e)
 
   data = json.loads(request.body.decode('utf8'))
-  print(data["role_name"])
+  
   if data["isCurrent"] == "yes":
     isCurrent = True
   elif data["isCurrent"] == "no":
@@ -205,7 +224,7 @@ def job_answers(request):
   #    Category(name="Mortal")]
 
   for key, value in jobQAndAs.items():
-    # print(jobQAndAs.items())
+    
     JobAnswer.objects.create(
       question_id=key,
       answer=value,
