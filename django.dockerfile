@@ -21,10 +21,10 @@ apt-get install python-pip python-dev build-essential -y
 RUN pip3 install -r /app/requirements.txt 
 
 ## set it so all docker commands going forward start in the `/app` directory
-WORKDIR /app
-
+WORKDIR /app/right_move
+EXPOSE 80
 ## connect port 8000 to the "outside world" of the container (so you can connect via localhost:8000 and don't need to go inside the container)
-EXPOSE 8000
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 
 

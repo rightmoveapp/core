@@ -28,6 +28,12 @@ def get_env_variable(var_name):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+### ENVARS WE NEED ###
+# DJANGO_SECRET_KEY
+# DJANGO_DEBUG
+# EXTERNAL_IP
+#
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -35,9 +41,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=i-e0+9yre2um!st^pz7w)2-vb$u%ft8#mr=p4a3b9xo1%6=1-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG',True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv('EXTERNAL_IP'),'redstapler.app','api.redstapler.app','localhost',]
 
 
 # Application definition
@@ -59,14 +65,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-#TODO: remove localhost for production! 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://localhost:8000","https://redstapler.app",]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000","https://www.redstapler.app","https://api.redstapler.app",]
 CORS_ALLOW_HEADERS = default_headers + (
             'LinkedinCode',
             )
@@ -92,20 +96,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'right_move.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_env_variable('DATABASE_NAME'),
-        'USER': get_env_variable('DATABASE_USER'),
-        'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
-        'HOST': 'django_db',
-        'PORT': '5432',
-                }
-    }
-
+# Database - here is the default sqlite3 setup for when needed.
+PG_CONNECTION = {'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DJANGO_DATABASE_NAME'),
+        'USER': os.getenv('DJANGO_DATABASE_USER'),
+        'PASSWORD': os.getenv('DJANGO_DATABASE_PASSWORD'),
+        'HOST': os.getenv('DJANGO_DATABASE_HOST'),
+        'PORT': os.getenv('DJANGO_DATABASE_PORT','5432'),
+    }}
+SQLITE3_CONNECTION = {'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }}
+if os.getenv('DJANGO_DATABASE_TYPE') == 'postgres':
+    print("using postgres database")
+    DATABASES = PG_CONNECTION
+else:
+    print("using sqlite3 database")
+    DATABASES = SQLITE3_CONNECTION
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
