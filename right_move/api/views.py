@@ -108,7 +108,7 @@ def user_graph(request):
 
   response["name"] = "flare"
   response["children"] = list()
-  categories = Category.objects.all().values("id", "category_name")
+  categories = Category.objects.all().values("id","category_name")
   for category in categories:
     category["children"] = list(Subcategory.objects.filter(category = category["id"]).values("subcategory_name", "heuristic_value"))
     response["children"].append(category)
