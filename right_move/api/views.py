@@ -7,6 +7,7 @@ import string
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from api.utils.login import get_from_linkedin
+from api.utils.data_science import DataScience
 import json
 
 
@@ -91,6 +92,7 @@ def user_profile(request):
 
 
   response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
+  print(list(user.job_set.values('company_name','role','score','salary','is_current')))
 
   return JsonResponse(response)
 
@@ -133,7 +135,15 @@ def user_attr_answers(request):
     answer=data["answer"],
     user_id=user.id
   )
-
+  datascience = DataScience()
+  if user.job_set.all().count() <1:
+    datascience.update_user_metrics(user.id)
+  else:
+    jobs = user.job_set.all()
+    print(jobs)
+    for job in jobs:
+      print(job.id)
+      datascience.do_science(user.id, job.id)
   return HttpResponse({"success":True})
 
 
@@ -169,7 +179,7 @@ def job_answers(request):
     return HttpResponseBadRequest(e)
 
   data = json.loads(request.body.decode('utf8'))
-  print(data)
+  print(data["role_name"])
   if data["isCurrent"] == "yes":
     isCurrent = True
   elif data["isCurrent"] == "no":
@@ -186,7 +196,6 @@ def job_answers(request):
   job.save()
 
   jobQAndAs = data["questionsAndAnswers"]
-  print(jobQAndAs)
   # jobAttrs = list()
   # for pair in jobQAndAs
   #   jobAttrs.append(JobAnswer(question_id=pair[]))
@@ -196,21 +205,20 @@ def job_answers(request):
   #    Category(name="Mortal")]
 
   for key, value in jobQAndAs.items():
-    print(key)
-    print(value)
     # print(jobQAndAs.items())
     JobAnswer.objects.create(
       question_id=key,
       answer=value,
       job_id=job.id
     )
+  datascience = DataScience()
+  if user.userattribute_set.all().count() > 1:
+    datascience.update_job_metrics(job.id)
 
   return HttpResponse({"success":True})
 
 ################## End point to post a new user basic profile ################################
 def user_basic_profile(request):
-  print(request.body)
-  
 ##call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
@@ -218,7 +226,6 @@ def user_basic_profile(request):
     return HttpResponseBadRequest(e)
 
   data = json.loads(request.body.decode('utf8'))
-  print(list(Role.objects.filter(role_name = data["role_name"]).values("role_name")))
   UserBasicProfile.objects.create(
     # question_id=data["question"],
     # answer=data["answer"],
