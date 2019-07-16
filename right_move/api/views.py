@@ -94,16 +94,22 @@ def user_profile(request):
 
   # response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
   response["jobs"]=list()
-  all_jobs = list(user.job_set.values('company_name','role','score','salary','is_current'))
+  all_jobs = user.job_set.all()
+  print(all_jobs)
+  # values('company_name','role','score','salary','is_current'))
   for job in all_jobs:
-    print(job["role"])
+    print(job)
+    company_name = job.company_name
+    print(company_name)
     # role = Role.objects.get(id = job["role"]).values("role_name")
     role = Role.objects.get(id=job["role"]).role_name
-    print(role)
+    score = job["score"]
+    salary =job["salary"]
+    is_current =job["is_current"]
     # get_role = Role.objects.get(id = job["role"])
     # role = get_role["role_name"]
     response["jobs"].append(job)
-  
+
 
   return JsonResponse(response)
 
