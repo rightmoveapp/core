@@ -71,6 +71,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ORIGIN_WHITELIST = ["http://localhost:3000","https://www.redstapler.app","https://api.redstapler.app",]
+CORS_ALLOW_HEADERS = default_headers + (
+            'LinkedinCode',
+            )
 
 ROOT_URLCONF = 'right_move.urls'
 

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import UserSerializer, GroupSerializer, QuestionSerializer
-from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice
+from api.models import Question, Content, Category, Subcategory, Choice, UserAttribute, Job, JobAttribute, PersistantSession,UserBasicProfile, UserAnswer, JobQuestion, JobChoice, JobAnswer, Role, RoleSalary,QuestionMapping, ZipcodeDetail, UserAttributeWeight
 import random
 import string
 from datetime import datetime
@@ -38,7 +38,7 @@ def login(request):
     authed_user.save()
 
     ## create or update session token using this crypto method
-    ## https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits/23728630#23728630 
+    ## https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits/23728630#23728630
     token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(100))
 
     session = PersistantSession.objects.update_or_create(
@@ -70,7 +70,8 @@ def self_authenticate(request):
     else:
         raise ValueError(f"{AUTH} is required!")
 
-##end point to get the user profile
+
+######end point to get the user profile################################################
 def user_profile(request):
   response = dict()
 
@@ -93,7 +94,8 @@ def user_profile(request):
 
   return JsonResponse(response)
 
-##End point to get the user attribute questions
+
+##################End point to get the user attribute questions################################
 
 def user_attr_questions(request):
   response = dict()
@@ -114,6 +116,8 @@ def user_attr_questions(request):
 
   return JsonResponse(response)
 
+
+################## End point to post the user attribute answers ################################
 def user_attr_answers(request):
   print(request.body)
 ##call the authenticate object to get a user object
@@ -132,9 +136,11 @@ def user_attr_answers(request):
 
   return HttpResponse({"success":True})
 
+
+################## End point to get the job questions ################################
 def job_questions(request):
   response = dict()
-##call the authenticate object to get a user object
+#call the authenticate object to get a user object
   try:
     user = self_authenticate(request)
   except ValueError as e:
@@ -147,24 +153,91 @@ def job_questions(request):
     for choice in question["choices"]:
       choice["input_type"] = question["input_type"]
     response["questionsAndChoices"].append(question)
+  role_names = list(Role.objects.all().values("role_name"))
+  response["role_names"] = role_names
 
   return JsonResponse(response)
 
-# def job_answers(request):
-#   print(request.body)
-# ##call the authenticate object to get a user object
-#   try:
-#     user = self_authenticate(request)
-#   except ValueError as e:
-#     return HttpResponseBadRequest(e)
 
-#   data = json.loads(request.body.decode('utf8'))
-#   print(data)
-#   UserAnswer.objects.create(
-#     question_id=data["question"],
-#     answer=data["answer"],
-#     user_id=user.id
-#   )
+################## End point to post a new job and its answers ################################
+def job_answers(request):
 
-#   return HttpResponse({"success":True})
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
 
+  data = json.loads(request.body.decode('utf8'))
+  print(data)
+  if data["isCurrent"] == "yes":
+    isCurrent = True
+  elif data["isCurrent"] == "no":
+    isCurrent = False
+  job = Job.objects.create(
+    company_name = data["companyName"],
+    role = Role.objects.get(role_name = data["role_name"]),
+    user_id=user.id,
+    city = data["city"],
+    zipcode = data["zipcode"],
+    salary = data["salary"],
+    is_current = isCurrent,
+  )
+  job.save()
+
+  jobQAndAs = data["questionsAndAnswers"]
+  print(jobQAndAs)
+  # jobAttrs = list()
+  # for pair in jobQAndAs
+  #   jobAttrs.append(JobAnswer(question_id=pair[]))
+
+  # [Category(name="God"),
+  #    Category(name="Demi God"),
+  #    Category(name="Mortal")]
+
+  for key, value in jobQAndAs.items():
+    print(key)
+    print(value)
+    # print(jobQAndAs.items())
+    JobAnswer.objects.create(
+      question_id=key,
+      answer=value,
+      job_id=job.id
+    )
+
+  return HttpResponse({"success":True})
+
+################## End point to post a new user basic profile ################################
+def user_basic_profile(request):
+  print(request.body)
+  
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  data = json.loads(request.body.decode('utf8'))
+  print(list(Role.objects.filter(role_name = data["role_name"]).values("role_name")))
+  UserBasicProfile.objects.create(
+    # question_id=data["question"],
+    # answer=data["answer"],
+    user_id=user.id,
+    birthday=data["questionsAndAnswers"]["birthday"],
+    ethnicity = data["questionsAndAnswers"]["race_ethnicity"],
+    # address_1 = models.CharField(max_length=250)
+    # address_2 = models.CharField(max_length=250)
+    # city = models.CharField(max_length=250)
+    # state = models.CharField(max_length=250)
+    pronouns = data["questionsAndAnswers"]["pronouns"],
+    zipcode = data["questionsAndAnswers"]["zipcode"],
+    area_code = data["questionsAndAnswers"]["areacode"],
+    education = data["questionsAndAnswers"]["education"],
+    gender = data["questionsAndAnswers"]["gender"],
+    role = Role.objects.get(role_name = data["role_name"]),
+    years_experience = data["questionsAndAnswers"]["years_experience"],
+    relationship_status = data["questionsAndAnswers"]["relationship_status"],
+    num_dependents = data["questionsAndAnswers"]["num_dependents"],
+  )
+
+  return HttpResponse({"success":True})
