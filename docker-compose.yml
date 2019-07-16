@@ -37,12 +37,14 @@ services:
 
     ## set environment variables in the django container
     environment:
-      - DATABASE_NAME=django
-      - DATABASE_PASSWORD=django
-      - DATABASE_USER=django
+      - DJANGO_DATABASE_NAME=django
+      - DJANGO_DATABASE_PASSWORD=django
+      - DJANGO_DATABASE_USER=django
+      - DJANGO_DATABASE_HOST=django_db
+      - DJANGO_DATABASE_TYPE=postgres
       - REDSTAPLER_LINKEDIN_CLIENT_ID=${REDSTAPLER_LINKEDIN_CLIENT_ID}
       - REDSTAPLER_LINKEDIN_SECRET=${REDSTAPLER_LINKEDIN_SECRET}
-
+      - DJANGO_ENVIRONMENT=dev
     ## map port 8000 inside the container to port 8000 on your computer
     ports:
       - "8000:8000"

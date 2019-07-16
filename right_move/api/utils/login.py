@@ -12,7 +12,9 @@ def get_from_linkedin(auth_code:str)->dict:
   email_url = 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))'
   grant_type = "authorization_code"
   ## this needs to match EXACTLY with what you have listed with Linkedin
-  redirect_uri = "http://localhost:3000/linkedin_auth"
+  
+  client_host = "http://localhost:3000" if os.getenv('DJANGO_ENVIRONMENT') == 'dev' else "https://www.redstapler.app"
+  redirect_uri = client_host + "/linkedin_auth"
   ## use envars to import these, don't keep in your repo!
   client_id = os.environ["REDSTAPLER_LINKEDIN_CLIENT_ID"]
   client_secret = os.environ["REDSTAPLER_LINKEDIN_SECRET"]
