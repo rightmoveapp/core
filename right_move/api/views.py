@@ -92,8 +92,24 @@ def user_profile(request):
   response["userattributes"] = list(user.userattribute_set.values('subcategory', 'value'))
 
 
-  response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
-  
+  # response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
+  response["jobs"]=list()
+  all_jobs = user.job_set.all()
+  # values('company_name','role','score','salary','is_current'))
+  for eachjob in all_jobs:
+    job = dict()
+    job["id"]= eachjob.id
+    job["company_name"] = eachjob.company_name
+    job["score"] = eachjob.score
+    job["salary"] = eachjob.salary
+    job["is_current"] = eachjob.is_current
+    role_id = eachjob.role.pk
+    job["role"] = Role.objects.get(id = role_id).role_name
+    # role = Role.objects.get(id=job.role).role_name
+    # get_role = Role.objects.get(id = job["role"])
+    # role = get_role["role_name"]
+    response["jobs"].append(job)
+
 
   return JsonResponse(response)
 
