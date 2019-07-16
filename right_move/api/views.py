@@ -95,17 +95,17 @@ def user_profile(request):
   # response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
   response["jobs"]=list()
   all_jobs = user.job_set.all()
-  print(all_jobs)
   # values('company_name','role','score','salary','is_current'))
-  for job in all_jobs:
-    print(job)
-    company_name = job.company_name
-    print(company_name)
-    # role = Role.objects.get(id = job["role"]).values("role_name")
-    role = Role.objects.get(id=job["role"]).role_name
-    score = job["score"]
-    salary =job["salary"]
-    is_current =job["is_current"]
+  for eachjob in all_jobs:
+    job = dict()
+    job["id"]= eachjob.id
+    job["company_name"] = eachjob.company_name
+    job["score"] = eachjob.score
+    job["salary"] = eachjob.salary
+    job["is_current"] = eachjob.is_current
+    role_id = eachjob.role.pk
+    job["role"] = Role.objects.get(id = role_id).role_name
+    # role = Role.objects.get(id=job.role).role_name
     # get_role = Role.objects.get(id = job["role"])
     # role = get_role["role_name"]
     response["jobs"].append(job)
