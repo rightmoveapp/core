@@ -169,7 +169,7 @@ office_size as (
 		 from 
 			api_jobanswer
 		WHERE
-			question_id = i
+			question_id = 3
 		AND 
 			job_id = i
 		LIMIT 1
@@ -263,7 +263,7 @@ job_unweighted_vals as (
 	select
 		a.subcategory_id,
 		case
-			when a.subcategory_id = i then coalesce(os.num_employees,0.5)
+			when a.subcategory_id = 3 then coalesce(os.num_employees,0.5)
 			-- gaining experience
 			when a.subcategory_id = 5 then coalesce(zd.ord_val, 0.5)
 			when a.subcategory_id = 6 then coalesce(ol.rural_score, 0.5)

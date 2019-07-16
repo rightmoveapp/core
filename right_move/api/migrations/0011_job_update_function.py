@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.db import migrations
 
-with open(f'{settings.BASE_DIR}/seeds/002_salary_seed.sql','r') as seed:
+with open(f'{settings.BASE_DIR}/seeds/005_job_update_scores.sql','r') as seed:
     sql_seed = seed.read()
 
 class Migration(migrations.Migration):
