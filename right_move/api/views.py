@@ -96,6 +96,24 @@ def user_profile(request):
 
   return JsonResponse(response)
 
+################## End point to post a new user basic profile #################################
+def user_graph(request):
+  response = dict()
+
+##call the authenticate object to get a user object
+  try:
+    user = self_authenticate(request)
+  except ValueError as e:
+    return HttpResponseBadRequest(e)
+
+  response["name"] = "flare"
+  response["children"] = list()
+  categories = Category.objects.all().values("id", "category_name")
+  for category in categories:
+    category["children"] = list(Subcategory.objects.filter(category = category["id"]).values("subcategory_name", "heuristic_value"))
+    response["children"].append(category)
+
+  return JsonResponse(response)
 
 ##################End point to get the user attribute questions################################
 
