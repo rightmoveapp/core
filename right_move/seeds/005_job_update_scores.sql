@@ -332,7 +332,7 @@ distance_calc as (
 	inner join	
 		api_userattribute u
 	on
-		job.user_id = u.id
+		job.user_id = u.user_id
 	inner join
 		api_userattributeweight uw
 	on 
