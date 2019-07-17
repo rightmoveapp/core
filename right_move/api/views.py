@@ -89,13 +89,17 @@ def user_profile(request):
 
   response["birthday"] = user.userbasicprofile.birthday
 
-  response["userattributes"] = list(user.userattribute_set.values('subcategory', 'value'))
+  response["subcategories"] = list()
+  user_sub_vals = user.userattribute_set.all()
+  for eachsub in user_sub_vals:
+    sub = dict()
+    sub_id = eachsub.subcategory.pk
+    sub["name"] = Subcategory.objects.get(id = sub_id).subcategory_name
+    sub["value"] = eachsub.value
+    response["subcategories"].append(sub)
 
-
-  # response["jobs"] = list(user.job_set.values('company_name','role','score','salary','is_current'))
   response["jobs"]=list()
   all_jobs = user.job_set.all()
-  # values('company_name','role','score','salary','is_current'))
   for eachjob in all_jobs:
     job = dict()
     job["id"]= eachjob.id
@@ -110,27 +114,29 @@ def user_profile(request):
     # role = get_role["role_name"]
     response["jobs"].append(job)
 
+  # response["subcategories"] = list(Subcategory.objects.all().values("subcategory_name","heuristic_value"))
+
 
   return JsonResponse(response)
 
-################## End point to post a new user basic profile #################################
-def user_graph(request):
-  response = dict()
+################## End point to get user graph when we get d3 working #################################
+# def user_graph(request):
+#   response = dict()
 
-##call the authenticate object to get a user object
-  try:
-    user = self_authenticate(request)
-  except ValueError as e:
-    return HttpResponseBadRequest(e)
+# ##call the authenticate object to get a user object
+#   try:
+#     user = self_authenticate(request)
+#   except ValueError as e:
+#     return HttpResponseBadRequest(e)
 
-  response["name"] = "flare"
-  response["children"] = list()
-  categories = Category.objects.all().annotate(name=F('category_name')).values("id","name")
-  for category in categories:
-    category["children"] = list(Subcategory.objects.filter(category = category["id"]).annotate(name=F('subcategory_name')).values("name", "heuristic_value"))
-    response["children"].append(category)
+#   response["name"] = "flare"
+#   response["children"] = list()
+#   categories = Category.objects.all().annotate(name=F('category_name')).values("id","name")
+#   for category in categories:
+#     category["children"] = list(Subcategory.objects.filter(category = category["id"]).annotate(name=F('subcategory_name')).values("name", "heuristic_value"))
+#     response["children"].append(category)
 
-  return JsonResponse(response)
+#   return JsonResponse(response)
 
 ##################End point to get the user attribute questions################################
 
