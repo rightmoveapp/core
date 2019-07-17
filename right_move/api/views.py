@@ -33,7 +33,8 @@ def login(request):
     authed_user = User.objects.get_or_create(
         first_name = linkedin_user['first_name'],
         last_name = linkedin_user['last_name'],
-        email = linkedin_user['email']
+        email = linkedin_user['email'],
+        username = linkedin_user['email']
     )[0]
 
     ## make sure if it DID have to create a user we save him/her/it
