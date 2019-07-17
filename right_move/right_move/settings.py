@@ -41,7 +41,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=i-e0+9yre2um!st^pz7w)2-vb$u%ft8#mr=p4a3b9xo1%6=1-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG',False)
+DEBUG = os.getenv('DJANGO_DEBUG',True)
 
 ALLOWED_HOSTS = [os.getenv('EXTERNAL_IP'),'redstapler.app','api.redstapler.app','localhost',]
 
