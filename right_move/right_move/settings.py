@@ -41,7 +41,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=i-e0+9yre2um!st^pz7w)2-vb$u%ft8#mr=p4a3b9xo1%6=1-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG',True)
+DEBUG = os.getenv('DJANGO_DEBUG',False)
 
 ALLOWED_HOSTS = [os.getenv('EXTERNAL_IP'),'redstapler.app','api.redstapler.app','localhost',]
 
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000","https://www.redstapler.app","https://api.redstapler.app",]
+CORS_ORIGIN_WHITELIST = ["https://www.redstapler.app","https://api.redstapler.app",]
 CORS_ALLOW_HEADERS = default_headers + (
             'LinkedinCode',
             )
