@@ -9,7 +9,7 @@ class DataScience:
             cursor.execute(f"SELECT update_user_metrics({user_id})")
         ##TODO: this should return something 
 
-    def update_job_metrics(self, job_id):
+    def update_job_metrics(self, job_id:int)->None:
         """ executes a big scary sql function 
             that updates all the job metrics."""
         with connection.cursor() as cursor:
